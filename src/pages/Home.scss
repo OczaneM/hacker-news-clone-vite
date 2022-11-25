@@ -1,11 +1,39 @@
 @use "../styles/colors.scss";
 
 .home-page {
+  flex-grow: 1;
+  min-height: 100%;
+  position: relative;
+
   > .heading {
     display: flex;
     margin-bottom: 40px;
   }
   > .heading > div {
     margin-right: 15px;
+  }
+
+  > .body {
+    margin-bottom: 80px; // takes into account footer margins
+  }
+
+  > .body > .showmore {
+    margin: 20px 0 40px 0;
+  }
+
+  > .body .story-container {
+    padding: 10px 0;
+  }
+
+  > .footer {
+    position: absolute; // keeps footer at bottom of page
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 2px solid colors.$accent-primary;
+    padding-top: 30px;
   }
 }

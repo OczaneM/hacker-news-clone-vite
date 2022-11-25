@@ -5,6 +5,8 @@
   border-top: 8px solid colors.$accent-primary;
   padding: 50px 100px;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .theme.-classic {
