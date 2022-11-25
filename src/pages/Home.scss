@@ -1,0 +1,11 @@
+@use "../styles/colors.scss";
+
+.home-page {
+  > .heading {
+    display: flex;
+    margin-bottom: 40px;
+  }
+  > .heading > div {
+    margin-right: 15px;
+  }
+}

@@ -6,7 +6,6 @@ import {
   getAllVisibleStoryIds,
 } from "../store/stories"
 import SavedToggle from "../components/SavedToggle"
-import AppTitle from "../components/AppTitle"
 import "./Home.scss"
 
 const Home = () => {
@@ -20,7 +19,7 @@ const Home = () => {
     <div className="home-page">
       <div className="heading">
         <div className="y-icon">Y</div>
-        <AppTitle />
+        <div className="title">Hacker News</div>
         <SavedToggle />
       </div>
       <div className="body">
@@ -30,7 +29,7 @@ const Home = () => {
         <button>show more</button>
       </div>
       <div className="footer">
-        <AppTitle size="-small" />
+        <div className="title">Hacker News</div>
         <SavedToggle />
       </div>
     </div>
