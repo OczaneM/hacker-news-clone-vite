@@ -5,6 +5,8 @@ import {
   getFetchStatusForAllStoryIds,
   getAllVisibleStoryIds,
 } from "../store/stories"
+import SavedToggle from "../components/SavedToggle"
+import "./Home.scss"
 
 const Home = () => {
   const storiesFetchSuccess =
@@ -15,7 +17,11 @@ const Home = () => {
     "Loading"
   ) : (
     <div className="home-page">
-      <div className="heading"></div>
+      <div className="heading">
+        <div className="y-icon">Y</div>
+        <div className="title">Hacker News</div>
+        <SavedToggle />
+      </div>
       <div className="body">
         {visibleStoryIds.map((storyId, index) => {
           return <Story key={storyId} storyId={storyId} index={index + 1} />
