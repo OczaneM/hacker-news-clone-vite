@@ -4,7 +4,7 @@
   font-family: Arial, Helvetica, sans-serif;
   border-top: 8px solid colors.$accent-primary;
   padding: 50px 100px;
-  height: 100vh;
+  flex-grow: 1;
 }
 
 .theme.-classic {
