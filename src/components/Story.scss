@@ -1,0 +1,34 @@
+@use "../styles/colors.scss";
+
+.story-container {
+  display: flex;
+
+  > .index-column > .index {
+    color: colors.$text-light;
+    margin-right: 10px;
+  }
+
+  > .content-column > .heading {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  > .content-column > .heading > .titlelink {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+
+  > .content-column > .heading > .source {
+    color: colors.$text-light;
+    font-size: 12px;
+  }
+
+  > .content-column > .body {
+    color: colors.$text-light;
+    font-size: 12px;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -6,8 +6,10 @@ import {
   getStoryById,
   getFetchStatusForStoryById,
 } from "../store/stories"
+import "./Story.scss"
 
 const StorySummary = ({ storyId, index, isSaved }) => {
+  const [hostName, setHostName] = useState()
   const dispatch = useDispatch()
   const storyFetchSuccess =
     useSelector((state) => getFetchStatusForStoryById(state, storyId)) ===
@@ -20,23 +22,33 @@ const StorySummary = ({ storyId, index, isSaved }) => {
     if (!storyFetchSuccess) dispatch(getStory(storyId))
   }, [])
 
+  useEffect(() => {
+    if (url && !hostName) setHostName(new URL(url).hostname)
+  }, [url])
+
   return (
     <div>
       {storyFetchSuccess ? (
         <div className="story-container">
-          <div className="heading">
-            {index}.{" "}
-            <a href={url} className="titlelink">
-              {title}
-            </a>{" "}
-            <span className="source">({url})</span>
+          <div className="index-column">
+            <span className="index">{index}. </span>
           </div>
-          <div className="body">
-            <span className="score">{score} points </span>
-            <span className="by">by {by} </span>
-            <span className="time">{time} | </span>
-            <span className="numberofcomments">{descendants} comments | </span>
-            <button className={`savebutton ${isSaved && "-saved"}`}></button>
+          <div className="content-column">
+            <div className="heading">
+              <a href={url} className="titlelink">
+                {title}
+              </a>{" "}
+              <span className="source">({hostName})</span>
+            </div>
+            <div className="body">
+              <span className="score">{score} points </span>
+              <span className="by">by {by} </span>
+              <span className="time">{time} | </span>
+              <span className="numberofcomments">
+                {descendants} comments |{" "}
+              </span>
+              <button className={`savebutton ${isSaved && "-saved"}`}></button>
+            </div>
           </div>
         </div>
       ) : (
