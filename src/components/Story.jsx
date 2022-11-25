@@ -6,6 +6,7 @@ import {
   getStoryById,
   getFetchStatusForStoryById,
 } from "../store/stories"
+import unsavedIcon from "../assets/star-regular.svg"
 import "./Story.scss"
 
 const StorySummary = ({ storyId, index, isSaved }) => {
@@ -47,7 +48,10 @@ const StorySummary = ({ storyId, index, isSaved }) => {
               <span className="numberofcomments">
                 {descendants} comments |{" "}
               </span>
-              <button className={`savebutton ${isSaved && "-saved"}`}></button>
+              <button className={`save-button ${isSaved && "-saved"}`}>
+                <img src={unsavedIcon} alt="Unsaved Story" />
+                saved
+              </button>
             </div>
           </div>
         </div>
