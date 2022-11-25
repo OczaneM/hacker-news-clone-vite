@@ -1,10 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Outlet } from "react-router-dom"
+import "./appLayout.scss"
+import "../styles/globalOverrides.scss"
 
 const AppLayout = () => {
   return (
-    <div>
+    <div className="theme -classic">
       <Outlet />
     </div>
   )
