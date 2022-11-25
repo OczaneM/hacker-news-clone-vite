@@ -6,6 +6,7 @@ import {
   getAllVisibleStoryIds,
 } from "../store/stories"
 import SavedToggle from "../components/SavedToggle"
+import AppTitle from "../components/AppTitle"
 import "./Home.scss"
 
 const Home = () => {
@@ -19,15 +20,19 @@ const Home = () => {
     <div className="home-page">
       <div className="heading">
         <div className="y-icon">Y</div>
-        <div className="title">Hacker News</div>
+        <AppTitle />
         <SavedToggle />
       </div>
       <div className="body">
         {visibleStoryIds.map((storyId, index) => {
           return <Story key={storyId} storyId={storyId} index={index + 1} />
         })}
+        <button>show more</button>
       </div>
-      <div className="footer"></div>
+      <div className="footer">
+        <AppTitle size="-small" />
+        <SavedToggle />
+      </div>
     </div>
   )
 }
