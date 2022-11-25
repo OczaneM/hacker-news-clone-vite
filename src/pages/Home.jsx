@@ -1,39 +1,38 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import PropTypes from "prop-types"
 import Story from "../components/Story"
-import {
-  getFetchStatusForAllStoryIds,
-  getAllVisibleStoryIds,
-} from "../store/stories"
-import SavedToggle from "../components/SavedToggle"
 import "./Home.scss"
 
-const Home = () => {
-  const storiesFetchSuccess =
-    useSelector(getFetchStatusForAllStoryIds) === "pending"
-  const visibleStoryIds = useSelector(getAllVisibleStoryIds)
+const Home = ({ storyIds }) => {
+  const savedToggle = (
+    <div className="toggle-saved-buttons">
+      <button>latest</button> | <button>starred</button>
+    </div>
+  )
 
-  return storiesFetchSuccess ? (
-    "Loading"
-  ) : (
+  return (
     <div className="home-page">
       <div className="heading">
         <div className="y-icon">Y</div>
         <div className="title">Hacker News</div>
-        <SavedToggle />
+        {savedToggle}
       </div>
       <div className="body">
-        {visibleStoryIds.map((storyId, index) => {
+        {storyIds.map((storyId, index) => {
           return <Story key={storyId} storyId={storyId} index={index + 1} />
         })}
         <button>show more</button>
       </div>
       <div className="footer">
         <div className="title">Hacker News</div>
-        <SavedToggle />
+        {savedToggle}
       </div>
     </div>
   )
+}
+
+Home.propTypes = {
+  storyIds: PropTypes.array,
 }
 
 export default Home
