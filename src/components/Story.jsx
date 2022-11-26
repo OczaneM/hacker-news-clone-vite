@@ -11,6 +11,7 @@ import {
 import unsavedIcon from "../assets/star-regular.svg"
 import savedIcon from "../assets/star-solid.svg"
 import "./Story.scss"
+import convertRelativeDays from "../utils/convertRelativeDays"
 
 const Story = ({ storyId }) => {
   const [hostName, setHostName] = useState()
@@ -20,6 +21,7 @@ const Story = ({ storyId }) => {
     "fulfilled"
   const { by, descendants, score, time, title, url, index, isSaved } =
     useSelector((state) => getStoryById(state, storyId))
+  const date = time && convertRelativeDays(time)
 
   useEffect(() => {
     if (!storyFetchSuccess) dispatch(getStory(storyId))
@@ -51,7 +53,7 @@ const Story = ({ storyId }) => {
             <div className="body">
               <span className="score">{score} points </span>
               <span className="by">by {by} </span>
-              <span className="time">{time} | </span>
+              <span className="time">{date} | </span>
               <span className="numberofcomments">
                 {descendants} comments |{" "}
               </span>
