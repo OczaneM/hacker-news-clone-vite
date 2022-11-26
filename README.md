@@ -9,5 +9,6 @@ Remaining dependencies are for development purposes like Jest, ESLint, Prettier,
 
 To use, clone this github repo into your local environment
 -> navigate to the root folder
+-> run `npm install` to install the dependencies
 -> run `npm run dev` to start up vite
 -> navigate to the localhost defined by vite in your browser
