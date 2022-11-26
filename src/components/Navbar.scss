@@ -1,0 +1,15 @@
+@use "../styles/colors.scss";
+
+.nav-bar > a {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: colors.$text-light;
+  text-decoration: none;
+}
+
+.nav-bar > a.active {
+  color: colors.$accent-primary;
+  font-weight: bold;
+}

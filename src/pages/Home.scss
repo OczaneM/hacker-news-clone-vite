@@ -5,43 +5,7 @@
   min-height: 100%;
   position: relative;
 
-  > .heading {
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-  }
-  > .heading > div,
-  > .heading .y-icon {
-    margin-right: 20px;
-  }
-
-  > .heading .y-icon {
-    height: 35px;
-    width: 35px;
-  }
-
-  > .heading > .title {
-    font-size: 28px;
-    font-weight: 900;
-  }
-
-  .home-navbar > button {
-    background-color: transparent;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: colors.$text-light;
-  }
-
-  .home-navbar > button.-active {
-    color: colors.$accent-primary;
-  }
-
-  > .body {
-    margin-bottom: 80px; // takes into account footer margins
-  }
-
-  > .body > .showmore {
+  > .showmore {
     margin: 20px 0 40px 0;
     background-color: colors.$accent-primary;
     color: colors.$text-darkmode-primary;
@@ -51,34 +15,7 @@
     cursor: pointer;
   }
 
-  > .body .story-container {
-    padding: 15px 0;
-  }
-
-  > .body > .no-stories-view {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 40%;
-    left: 45%;
-    font-size: 20px;
-    color: colors.$text-light;
-  }
-
-  > .footer {
-    position: absolute; // keeps footer at bottom of page
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-top: 2px solid colors.$accent-primary;
-    padding-top: 30px;
-  }
-
-  > .footer > .title {
-    font-size: 20px;
-    font-weight: 900;
-    margin-bottom: 20px;
+  .story-container {
+    padding: 13px 0;
   }
 }

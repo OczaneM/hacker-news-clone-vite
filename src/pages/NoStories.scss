@@ -1,0 +1,16 @@
+@use "../styles/colors.scss";
+
+.no-stories {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  font-size: 20px;
+  color: colors.$text-light;
+
+  > img {
+    height: 200px;
+    width: 200px;
+  }
+}

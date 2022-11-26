@@ -1,70 +1,31 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Story from "../components/Story"
-import yIcon from "../assets/y18.gif"
-import { Link } from "react-router-dom"
-import NoNewsIcon from "../assets/icons8-news.svg"
+import NoStories from "./NoStories"
 import "./Home.scss"
 
-const Home = ({ storyIds = [], activeNav = "", setActiveNav }) => {
-  const navbar = (
-    <div className="home-navbar">
-      <button
-        onClick={() => setActiveNav("latest")}
-        className={activeNav === "latest" ? "-active" : ""}
-      >
-        latest
-      </button>
-      |
-      <button
-        onClick={() => setActiveNav("starred")}
-        className={activeNav === "starred" ? "-active" : ""}
-      >
-        starred
-      </button>
-    </div>
-  )
-
-  const noStoriesView = (
-    <div className="no-stories-view">
-      <img src={NoNewsIcon} />
-      {"Can't find any news!"}
-    </div>
-  )
+const Home = ({ storyIds, storiesFetchSuccess }) => {
+  if (storiesFetchSuccess && storyIds.length === 0) return <NoStories />
 
   return (
     <div className="home-page">
-      <div className="heading">
-        <Link to="/">
-          <img src={yIcon} className="y-icon" alt="Y Combination News" />
-        </Link>
-        <div className="title">Hacker News</div>
-        {navbar}
-      </div>
-      <div className="body">
-        {storyIds.length > 0 ? (
-          <>
-            {storyIds.map((storyId) => {
-              return <Story key={storyId} storyId={storyId} />
-            })}
-            <button className="showmore">show more</button>
-          </>
-        ) : (
-          noStoriesView
-        )}
-      </div>
-      <div className="footer">
-        <div className="title">Hacker News</div>
-        {navbar}
-      </div>
+      {storiesFetchSuccess ? (
+        <>
+          {storyIds.map((storyId) => {
+            return <Story key={storyId} storyId={storyId} />
+          })}
+          <button className="showmore">show more</button>
+        </>
+      ) : (
+        <div>Loading</div>
+      )}
     </div>
   )
 }
 
 Home.propTypes = {
   storyIds: PropTypes.array,
-  setActiveNav: PropTypes.func,
-  activeNav: PropTypes.string,
+  storiesFetchSuccess: PropTypes.bool,
 }
 
 export default Home
