@@ -2,7 +2,25 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const baseUrl = "https://hacker-news.firebaseio.com/v0/"
-const newStoriesUrl = `${baseUrl}/newstories.json`
+const newStoriesUrl = `${baseUrl}/newstories.json?limitToFirst=100&orderBy="$key"`
+const storiesPerPage = 12
+
+const getRequestsInBatch = async (ids) => {
+  const batchRequests = ids.map((id) =>
+    axios.get(`${baseUrl}/item/${id}.json?print=pretty`)
+  )
+
+  const storiesById = {}
+  await axios
+    .all(batchRequests)
+    .then(
+      axios.spread((...res) =>
+        res.map(({ data }) => (storiesById[data.id] = data))
+      )
+    )
+
+  return storiesById
+}
 
 export const getNewStories = createAsyncThunk(
   "stories/getNewStories",
@@ -12,23 +30,29 @@ export const getNewStories = createAsyncThunk(
       const newStoriesRes = await axios
         .get(newStoriesUrl)
         .then((res) => res.data)
-      return newStoriesRes
+
+      const storiesById = await getRequestsInBatch(
+        newStoriesRes.slice(0, storiesPerPage)
+      )
+
+      return { newStoriesRes, storiesById }
     } catch (error) {
       console.error(error)
     }
   }
 )
 
-export const getStory = createAsyncThunk("stories/getStory", async (id) => {
-  try {
-    const story = await axios
-      .get(`${baseUrl}/item/${id}.json?print=pretty`)
-      .then((res) => res.data)
-    return story
-  } catch (error) {
-    console.error(error)
+export const getStoryBatch = createAsyncThunk(
+  "stories/getStory",
+  async (ids) => {
+    try {
+      const storiesById = getRequestsInBatch(ids)
+      return storiesById
+    } catch (error) {
+      console.error(error)
+    }
   }
-})
+)
 
 export const storiesSlice = createSlice({
   name: "stories",
@@ -36,11 +60,11 @@ export const storiesSlice = createSlice({
     allIds: [],
     byId: {},
     allIdsStatus: "pending",
-    statusById: {},
+    byIdFetchStatus: "pending",
     latestById: [],
     savedById: [],
-    storiesPerPage: 12,
     currentIndex: 0,
+    currentSavedIndex: 0,
   },
   reducers: {
     save: (state, action) => {
@@ -49,6 +73,7 @@ export const storiesSlice = createSlice({
       state.byId[action.payload] = {
         ...state.byId[action.payload],
         isSaved: true,
+        localIndex: state.allIds.indexOf(action.payload) + 1,
       }
     },
     unsave: (state, action) => {
@@ -59,12 +84,18 @@ export const storiesSlice = createSlice({
       }
       state.savedById = state.savedById.filter((id) => id !== action.payload)
     },
-    showMore: (state) => {
-      state.currentIndex += state.storiesPerPage
-      state.latestById = state.allIds.slice(
-        state.currentIndex,
-        state.currentIndex + state.storiesPerPage
-      )
+    showMore: (state, action) => {
+      if (
+        action.payload === "allStories" &&
+        state.allIds.length > storiesPerPage
+      ) {
+        state.currentIndex += storiesPerPage
+      } else if (
+        action.payload === "savedStories" &&
+        state.savedById.length > storiesPerPage
+      ) {
+        state.currentSavedIndex += storiesPerPage
+      }
     },
   },
   extraReducers: (builder) => {
@@ -73,11 +104,8 @@ export const storiesSlice = createSlice({
         state.allIdsStatus = "pending"
       })
       .addCase(getNewStories.fulfilled, (state, action) => {
-        state.allIds = action.payload
-        state.latestById = action.payload.slice(
-          state.currentIndex,
-          state.storiesPerPage
-        )
+        state.allIds = action.payload.newStoriesRes
+        state.byId = action.payload.storiesById
         state.allIdsStatus = "fulfilled"
       })
       .addCase(getNewStories.rejected, (state) => {
@@ -85,15 +113,15 @@ export const storiesSlice = createSlice({
       })
 
     builder
-      .addCase(getStory.pending, (state, action) => {
-        state.statusById[action.meta.arg] = "pending"
+      .addCase(getStoryBatch.pending, (state) => {
+        state.byIdFetchStatus = "pending"
       })
-      .addCase(getStory.fulfilled, (state, action) => {
-        state.byId[action.meta.arg] = action.payload
-        state.statusById[action.meta.arg] = "fulfilled"
+      .addCase(getStoryBatch.fulfilled, (state, action) => {
+        state.byId = { ...state.byId, ...action.payload }
+        state.byIdFetchStatus = "fulfilled"
       })
-      .addCase(getStory.rejected, (state, action) => {
-        state.statusById[action.meta.arg] = "rejected"
+      .addCase(getStoryBatch.rejected, (state) => {
+        state.byIdFetchStatus = "rejected"
       })
   },
 })
@@ -101,14 +129,19 @@ export const storiesSlice = createSlice({
 export const getFetchStatusForAllStoryIds = (state) =>
   state.stories.allIdsStatus
 
-export const getFetchStatusForStoryById = (state, id) =>
-  state.stories.statusById[id] || "pending"
-
 export const getStoryById = (state, id) => state.stories.byId[id] || {}
 
-export const getAllVisibleStoryIds = (state) => state.stories.latestById
+export const getAllVisibleStoryIds = (state) =>
+  state.stories.allIds.slice(
+    state.stories.currentIndex,
+    state.stories.currentIndex + storiesPerPage
+  )
 
-export const getAllSavedStories = (state) => state.stories.savedById
+export const getAllSavedStories = (state) =>
+  state.stories.savedById.slice(
+    state.stories.currentSavedIndex,
+    state.stories.currentSavedIndex + storiesPerPage
+  )
 
 // Action creators are generated for each case reducer function
 export const { save, unsave, showMore } = storiesSlice.actions

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useRoutes } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import Home from "./pages/Home"
@@ -7,6 +7,7 @@ import {
   getFetchStatusForAllStoryIds,
   getAllVisibleStoryIds,
   getAllSavedStories,
+  getStoryBatch,
   showMore,
 } from "./store/stories"
 
@@ -14,10 +15,13 @@ const Routes = () => {
   const dispatch = useDispatch()
   const storiesFetchSuccess =
     useSelector(getFetchStatusForAllStoryIds) === "fulfilled"
-  const allStoryIds = useSelector(getAllVisibleStoryIds)
+  const visibleStoryIds = useSelector(getAllVisibleStoryIds)
   const savedStoryIds = useSelector(getAllSavedStories)
+  const currentIndex = useSelector((state) => state.stories.currentIndex)
 
-  const showMoreStories = () => dispatch(showMore())
+  useEffect(() => {
+    dispatch(getStoryBatch(visibleStoryIds))
+  }, [currentIndex])
 
   let element = useRoutes([
     {
@@ -28,9 +32,9 @@ const Routes = () => {
           path: "/",
           element: (
             <Home
-              storyIds={allStoryIds}
+              storyIds={visibleStoryIds}
               storiesFetchSuccess={storiesFetchSuccess}
-              showMore={showMoreStories}
+              showMore={() => dispatch(showMore("allStories"))}
             />
           ),
         },
@@ -40,7 +44,7 @@ const Routes = () => {
             <Home
               storyIds={savedStoryIds}
               storiesFetchSuccess={storiesFetchSuccess}
-              showMore={showMoreStories}
+              showMore={() => dispatch(showMore("savedStories"))}
             />
           ),
         },
