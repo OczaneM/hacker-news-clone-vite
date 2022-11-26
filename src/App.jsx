@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getNewStories, getFetchStatusForAllStoryIds } from "./store/stories"
 import Routes from "./routes"

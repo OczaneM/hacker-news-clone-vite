@@ -2,8 +2,8 @@ import "@testing-library/jest-dom"
 import React from "react"
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { renderWithProviders } from "../utils/testUtils"
-import HomeContainer from "./HomeContainer"
+import { renderWithProviders } from "./utils/testUtils"
+import App from "./App"
 
 const stories = {
   1: {
@@ -20,9 +20,9 @@ const stories = {
   },
 }
 
-describe("HomeContainer", () => {
+describe("App", () => {
   test("Displays a home page after succesfully fetching stories", async () => {
-    renderWithProviders(<HomeContainer />, {
+    renderWithProviders(<App />, {
       preloadedState: { stories: { allIdsStatus: "fulfilled" } },
     })
 
@@ -32,7 +32,7 @@ describe("HomeContainer", () => {
   })
 
   test("Displays loading when fetching stories is not succesful", () => {
-    renderWithProviders(<HomeContainer />, {
+    renderWithProviders(<App />, {
       preloadedState: { stories: { allIdsStatus: "pending" } },
     })
 
@@ -40,15 +40,15 @@ describe("HomeContainer", () => {
   })
 
   test("Displays no news views when there are no stories", () => {
-    renderWithProviders(<HomeContainer />, {
+    renderWithProviders(<App />, {
       preloadedState: { stories: { allIdsStatus: "fulfilled", allIds: [] } },
     })
 
     expect(screen.getByText("Can't find any news!")).toBeVisible()
   })
 
-  test("Displays only starred stories when in starred view", () => {
-    renderWithProviders(<HomeContainer />, {
+  test.only("Displays only starred stories when in starred view", () => {
+    renderWithProviders(<App />, {
       preloadedState: {
         stories: {
           allIdsStatus: "fulfilled",

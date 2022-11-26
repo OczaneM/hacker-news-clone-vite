@@ -1,3 +1,4 @@
+import React from "react"
 import { useRoutes } from "react-router-dom"
 import { useSelector } from "react-redux"
 import Home from "./pages/Home"
@@ -13,7 +14,7 @@ const Routes = () => {
     useSelector(getFetchStatusForAllStoryIds) === "fulfilled"
   const allStoryIds = useSelector(getAllVisibleStoryIds)
   const savedStoryIds = useSelector(getAllSavedStories)
-  console.log({ allStoryIds, savedStoryIds })
+
   let element = useRoutes([
     {
       path: "/",

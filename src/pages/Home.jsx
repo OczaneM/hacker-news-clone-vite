@@ -4,7 +4,7 @@ import Story from "../components/Story"
 import NoStories from "./NoStories"
 import "./Home.scss"
 
-const Home = ({ storyIds, storiesFetchSuccess }) => {
+const Home = ({ storyIds = [], storiesFetchSuccess }) => {
   if (storiesFetchSuccess && storyIds.length === 0) return <NoStories />
 
   return (

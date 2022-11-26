@@ -175,7 +175,7 @@ export default {
   // A map from regular expressions to paths to transformers
   moduleNameMapper: {
     "^.+\\.svg$": "jest-svg-transformer",
-    "^.+\\.(css|less|scss|gif)$": "babel-jest",
+    "^.+\\.(css|less|scss|gif|png)$": "babel-jest",
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
