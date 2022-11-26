@@ -10,13 +10,13 @@ import Home from "../pages/Home"
 const HomeContainer = () => {
   const [activeNav, setActiveNav] = useState("latest")
   const storiesFetchSuccess =
-    useSelector(getFetchStatusForAllStoryIds) === "pending"
+    useSelector(getFetchStatusForAllStoryIds) === "fulfilled"
   const visibleStoryIds =
     activeNav === "starred"
       ? useSelector(getAllSavedStories)
       : useSelector(getAllVisibleStoryIds)
 
-  return storiesFetchSuccess ? (
+  return !storiesFetchSuccess ? (
     "Loading"
   ) : (
     <Home

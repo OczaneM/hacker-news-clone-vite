@@ -31,9 +31,11 @@ afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
 describe("HomeContainer", () => {
-  test("Displays a home page after succesfully fetching stories", () => {
-    renderWithProviders(<HomeContainer />)
+  test("Displays a home page after succesfully fetching stories", async () => {
+    renderWithProviders(<HomeContainer />, {
+      preloadedState: { stories: { allIdsStatus: "fulfilled" } },
+    })
 
-    expect(screen.getByText("Hacker News")).toBeVisible()
+    expect(screen.getAllByText("Hacker News")[0]).toBeVisible()
   })
 })
