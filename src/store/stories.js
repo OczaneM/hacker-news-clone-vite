@@ -61,7 +61,6 @@ export const storiesSlice = createSlice({
     byId: {},
     allIdsStatus: "pending",
     byIdFetchStatus: "pending",
-    latestById: [],
     savedById: [],
     currentIndex: 0,
     currentSavedIndex: 0,
