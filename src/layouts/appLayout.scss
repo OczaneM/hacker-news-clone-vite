@@ -13,8 +13,25 @@
   background-color: colors.$bg-default;
   color: colors.$text-primary;
 
+  > .themetoggle {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    right: 0;
+    margin-right: 50px; // same as theme padding
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+  }
+
   &.-darkmode {
     background-color: colors.$bg-darkmode;
     color: colors.$text-darkmode-primary;
+  }
+
+  // inverting colors for sun icon
+  &.-darkmode > .themetoggle > img {
+    filter: invert(100%) sepia(3%) saturate(14%) hue-rotate(334deg)
+      brightness(101%) contrast(107%);
   }
 }
