@@ -7,10 +7,33 @@
 
   > .heading {
     display: flex;
+    align-items: center;
     margin-bottom: 40px;
   }
-  > .heading > div {
-    margin-right: 15px;
+  > .heading > div,
+  > .heading .y-icon {
+    margin-right: 20px;
+  }
+
+  > .heading .y-icon {
+    height: 35px;
+    width: 35px;
+  }
+
+  > .heading > .title {
+    font-size: 28px;
+    font-weight: 900;
+  }
+
+  .home-navbar > button {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .home-navbar > button.-active {
+    color: colors.$accent-primary;
   }
 
   > .body {
