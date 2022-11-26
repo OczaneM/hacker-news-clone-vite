@@ -9,6 +9,8 @@ import Navbar from "../components/Navbar"
 import "./appLayout.scss"
 import "../styles/globalOverrides.scss"
 
+// Layout for the whole app
+// Displays components that are shared across all pages
 const AppLayout = () => {
   const [darkMode, setDarkMode] = useState(false)
 
@@ -24,7 +26,7 @@ const AppLayout = () => {
         <div className="title">Hacker News</div>
         <Navbar />
       </div>
-      <Outlet />
+      <Outlet /> {/* for rendering child routes */}
       <div className="footer">
         <div className="title">Hacker News</div>
         <Navbar />

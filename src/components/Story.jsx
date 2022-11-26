@@ -10,10 +10,13 @@ import convertRelativeDays from "../utils/convertRelativeDays"
 const Story = ({ storyId, index }) => {
   const [hostName, setHostName] = useState()
   const dispatch = useDispatch()
+
+  // Story details destructured
   const { by, descendants, score, time, title, url, isSaved, localIndex } =
     useSelector((state) => getStoryById(state, storyId))
-  const date = time && convertRelativeDays(time)
+  const date = time && convertRelativeDays(time) // only converts to days. nees more acurate converter.
 
+  // extract the story's source site name
   useEffect(() => {
     if (url && !hostName) setHostName(new URL(url).hostname)
   }, [url])
@@ -27,14 +30,18 @@ const Story = ({ storyId, index }) => {
     <div>
       <div className="story-container">
         <div className="index-column">
-          <span className="index">{localIndex || index}. </span>
+          {/* localIndex belongs to saved stories. Saved and default stories have different index per page */}
+          <span className="index">{localIndex || index}. </span>{" "}
         </div>
         <div className="content-column">
           <div className="heading">
+            {/* when url comes undefined, redirects to root path */}
             <a href={url || ""} className="titlelink">
+              {" "}
               {title}
             </a>{" "}
-            <span className="source">({hostName || "unknown"})</span>
+            <span className="source">({hostName || "unknown"})</span>{" "}
+            {/* when url comes undefined, just display unknown */}
           </div>
           <div className="body">
             <span className="score">{score} points </span>
