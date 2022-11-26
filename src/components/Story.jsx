@@ -45,10 +45,10 @@ const Story = ({ storyId }) => {
           </div>
           <div className="content-column">
             <div className="heading">
-              <a href={url} className="titlelink">
+              <a href={url || ""} className="titlelink">
                 {title}
               </a>{" "}
-              <span className="source">({hostName})</span>
+              <span className="source">({hostName || "unknown"})</span>
             </div>
             <div className="body">
               <span className="score">{score} points </span>
