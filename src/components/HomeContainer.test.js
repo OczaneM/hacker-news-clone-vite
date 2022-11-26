@@ -1,34 +1,24 @@
 import "@testing-library/jest-dom"
 import React from "react"
 import { screen } from "@testing-library/react"
-import { rest } from "msw"
-import { setupServer } from "msw/node"
+import userEvent from "@testing-library/user-event"
 import { renderWithProviders } from "../utils/testUtils"
 import HomeContainer from "./HomeContainer"
 
-const storyIds = [1, 2, 3]
-// We use msw to intercept the network request during the test,
-// and return the response 'John Smith' after 150ms
-// when receiving a get request to the `/api/user` endpoint
-export const handlers = [
-  rest.get(
-    "https://hacker-news.firebaseio.com/v0/newstories.json",
-    (req, res, ctx) => {
-      return res(storyIds, ctx.delay(150))
-    }
-  ),
-]
-
-const server = setupServer(...handlers)
-
-// Enable API mocking before tests.
-beforeAll(() => server.listen())
-
-// Reset any runtime request handlers we may add during the tests.
-afterEach(() => server.resetHandlers())
-
-// Disable API mocking after the tests are done.
-afterAll(() => server.close())
+const stories = {
+  1: {
+    by: "walterbell",
+    descendants: 0,
+    id: 33750598,
+    score: 1,
+    time: 1669446335,
+    isSaved: false,
+    title:
+      "IRS warns taxpayers about new $600 threshold for third-party payment reporting",
+    type: "story",
+    url: "https://www.cnbc.com/2022/11/23/heres-why-you-may-get-form-1099-k-for-third-party-payments-in-2022.html",
+  },
+}
 
 describe("HomeContainer", () => {
   test("Displays a home page after succesfully fetching stories", async () => {
@@ -37,5 +27,50 @@ describe("HomeContainer", () => {
     })
 
     expect(screen.getAllByText("Hacker News")[0]).toBeVisible()
+    expect(screen.getAllByText("latest")[0]).toBeVisible()
+    expect(screen.getAllByText("starred")[0]).toBeVisible()
+  })
+
+  test("Displays loading when fetching stories is not succesful", () => {
+    renderWithProviders(<HomeContainer />, {
+      preloadedState: { stories: { allIdsStatus: "pending" } },
+    })
+
+    expect(screen.getByText("Loading")).toBeVisible()
+  })
+
+  test("Displays no news views when there are no stories", () => {
+    renderWithProviders(<HomeContainer />, {
+      preloadedState: { stories: { allIdsStatus: "fulfilled", allIds: [] } },
+    })
+
+    expect(screen.getByText("Can't find any news!")).toBeVisible()
+  })
+
+  test("Displays only starred stories when in starred view", () => {
+    renderWithProviders(<HomeContainer />, {
+      preloadedState: {
+        stories: {
+          allIdsStatus: "fulfilled",
+          latestById: [1],
+          byId: stories,
+          statusById: { 1: "fulfilled" },
+          savedById: [],
+        },
+      },
+    })
+
+    userEvent.click(screen.getAllByText("starred")[0])
+    expect(screen.getByText("Can't find any news!")).toBeVisible()
+    expect(screen.queryByText("by walterbell")).not.toBeInTheDocument()
+
+    userEvent.click(screen.getAllByText("latest")[0])
+    expect(screen.queryByText("Can't find any news!")).not.toBeInTheDocument()
+    expect(screen.getByText("by walterbell")).toBeVisible()
+
+    userEvent.click(screen.getByText("saved"))
+    userEvent.click(screen.getAllByText("starred")[0])
+    expect(screen.queryByText("Can't find any news!")).not.toBeInTheDocument()
+    expect(screen.getByText("by walterbell")).toBeVisible()
   })
 })
