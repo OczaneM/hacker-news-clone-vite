@@ -1,8 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import storiesReducer from "./store/stories"
 
-export default configureStore({
-  reducer: {
-    stories: storiesReducer,
-  },
+const rootReducer = combineReducers({
+  stories: storiesReducer,
 })
+
+export const setupStore = (preloadedState = {}) => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  })
+}
