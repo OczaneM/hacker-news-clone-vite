@@ -13,14 +13,15 @@ import savedIcon from "../assets/star-solid.svg"
 import "./Story.scss"
 import convertRelativeDays from "../utils/convertRelativeDays"
 
-const Story = ({ storyId }) => {
+const Story = ({ storyId, index }) => {
   const [hostName, setHostName] = useState()
   const dispatch = useDispatch()
   const storyFetchSuccess =
     useSelector((state) => getFetchStatusForStoryById(state, storyId)) ===
     "fulfilled"
-  const { by, descendants, score, time, title, url, index, isSaved } =
-    useSelector((state) => getStoryById(state, storyId))
+  const { by, descendants, score, time, title, url, isSaved } = useSelector(
+    (state) => getStoryById(state, storyId)
+  )
   const date = time && convertRelativeDays(time)
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const Story = ({ storyId }) => {
 
 Story.propTypes = {
   storyId: PropTypes.number,
+  index: PropTypes.number,
 }
 
 export default Story
