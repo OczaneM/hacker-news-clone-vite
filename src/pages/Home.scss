@@ -55,6 +55,16 @@
     padding: 15px 0;
   }
 
+  > .body > .no-stories-view {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    font-size: 20px;
+    color: colors.$text-light;
+  }
+
   > .footer {
     position: absolute; // keeps footer at bottom of page
     bottom: 0;

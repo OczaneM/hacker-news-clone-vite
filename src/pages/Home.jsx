@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import Story from "../components/Story"
 import yIcon from "../assets/y18.gif"
 import { Link } from "react-router-dom"
+import NoNewsIcon from "../assets/icons8-news.svg"
 import "./Home.scss"
 
 const Home = ({ storyIds = [], activeNav = "", setActiveNav }) => {
@@ -24,6 +25,13 @@ const Home = ({ storyIds = [], activeNav = "", setActiveNav }) => {
     </div>
   )
 
+  const noStoriesView = (
+    <div className="no-stories-view">
+      <img src={NoNewsIcon} />
+      {"Can't find any news!"}
+    </div>
+  )
+
   return (
     <div className="home-page">
       <div className="heading">
@@ -34,10 +42,16 @@ const Home = ({ storyIds = [], activeNav = "", setActiveNav }) => {
         {navbar}
       </div>
       <div className="body">
-        {storyIds.map((storyId) => {
-          return <Story key={storyId} storyId={storyId} />
-        })}
-        <button className="showmore">show more</button>
+        {storyIds.length > 0 ? (
+          <>
+            {storyIds.map((storyId) => {
+              return <Story key={storyId} storyId={storyId} />
+            })}
+            <button className="showmore">show more</button>
+          </>
+        ) : (
+          noStoriesView
+        )}
       </div>
       <div className="footer">
         <div className="title">Hacker News</div>
