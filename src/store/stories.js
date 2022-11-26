@@ -37,11 +37,13 @@ export const storiesSlice = createSlice({
     byId: {},
     allIdsStatus: "pending",
     statusById: {},
-    visible: [],
+    latestById: [],
+    savedById: [],
   },
   reducers: {
     save: (state, action) => {
       // payload = story id
+      state.savedById.push(action.payload)
       state.byId[action.payload] = {
         ...state.byId[action.payload],
         isSaved: true,
@@ -53,6 +55,7 @@ export const storiesSlice = createSlice({
         ...state.byId[action.payload],
         isSaved: false,
       }
+      state.savedById = state.savedById.filter((id) => id !== action.payload)
     },
   },
   extraReducers: (builder) => {
@@ -62,7 +65,7 @@ export const storiesSlice = createSlice({
       })
       .addCase(getNewStories.fulfilled, (state, action) => {
         state.allIds = action.payload
-        state.visible = action.payload.slice(0, 12)
+        state.latestById = action.payload.slice(0, 12)
         state.allIdsStatus = "fulfilled"
       })
       .addCase(getNewStories.rejected, (state) => {
@@ -93,10 +96,9 @@ export const getFetchStatusForStoryById = (state, id) =>
 
 export const getStoryById = (state, id) => state.stories.byId[id] || {}
 
-export const getAllVisibleStoryIds = (state) => state.stories.visible
+export const getAllVisibleStoryIds = (state) => state.stories.latestById
 
-export const getAllSavedStories = (state) =>
-  Object.values(state.stories.byId).filter((story) => story.isSaved)
+export const getAllSavedStories = (state) => state.stories.savedById
 
 // Action creators are generated for each case reducer function
 export const { save, unsave } = storiesSlice.actions

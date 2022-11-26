@@ -12,7 +12,7 @@ import unsavedIcon from "../assets/star-regular.svg"
 import savedIcon from "../assets/star-solid.svg"
 import "./Story.scss"
 
-const StorySummary = ({ storyId }) => {
+const Story = ({ storyId }) => {
   const [hostName, setHostName] = useState()
   const dispatch = useDispatch()
   const storyFetchSuccess =
@@ -75,8 +75,8 @@ const StorySummary = ({ storyId }) => {
   )
 }
 
-StorySummary.propTypes = {
+Story.propTypes = {
   storyId: PropTypes.number,
 }
 
-export default StorySummary
+export default Story
