@@ -5,19 +5,21 @@ import {
   getStory,
   getStoryById,
   getFetchStatusForStoryById,
+  save,
+  unsave,
 } from "../store/stories"
 import unsavedIcon from "../assets/star-regular.svg"
+import savedIcon from "../assets/star-solid.svg"
 import "./Story.scss"
 
-const StorySummary = ({ storyId, index, isSaved }) => {
+const StorySummary = ({ storyId }) => {
   const [hostName, setHostName] = useState()
   const dispatch = useDispatch()
   const storyFetchSuccess =
     useSelector((state) => getFetchStatusForStoryById(state, storyId)) ===
     "fulfilled"
-  const { by, descendants, score, time, title, url } = useSelector((state) =>
-    getStoryById(state, storyId)
-  )
+  const { by, descendants, score, time, title, url, index, isSaved } =
+    useSelector((state) => getStoryById(state, storyId))
 
   useEffect(() => {
     if (!storyFetchSuccess) dispatch(getStory(storyId))
@@ -26,6 +28,11 @@ const StorySummary = ({ storyId, index, isSaved }) => {
   useEffect(() => {
     if (url && !hostName) setHostName(new URL(url).hostname)
   }, [url])
+
+  const toggleSaveStory = () => {
+    if (isSaved) dispatch(unsave(storyId))
+    else dispatch(save(storyId))
+  }
 
   return (
     <div>
@@ -48,8 +55,14 @@ const StorySummary = ({ storyId, index, isSaved }) => {
               <span className="numberofcomments">
                 {descendants} comments |{" "}
               </span>
-              <button className={`save-button ${isSaved && "-saved"}`}>
-                <img src={unsavedIcon} alt="Unsaved Story" />
+              <button
+                className={`save-button ${isSaved && "-saved"}`}
+                onClick={toggleSaveStory}
+              >
+                <img
+                  src={isSaved ? savedIcon : unsavedIcon}
+                  alt="Unsaved Story"
+                />
                 saved
               </button>
             </div>
@@ -64,8 +77,6 @@ const StorySummary = ({ storyId, index, isSaved }) => {
 
 StorySummary.propTypes = {
   storyId: PropTypes.number,
-  index: PropTypes.number,
-  isSaved: PropTypes.bool,
 }
 
 export default StorySummary

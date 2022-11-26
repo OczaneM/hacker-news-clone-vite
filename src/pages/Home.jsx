@@ -10,14 +10,14 @@ const Home = ({ storyIds = [], activeNav = "", setActiveNav }) => {
     <div className="home-navbar">
       <button
         onClick={() => setActiveNav("latest")}
-        className={activeNav === "latest" && "-active"}
+        className={activeNav === "latest" ? "-active" : ""}
       >
         latest
       </button>
       |
       <button
         onClick={() => setActiveNav("starred")}
-        className={activeNav === "starred" && "-active"}
+        className={activeNav === "starred" ? "-active" : ""}
       >
         starred
       </button>
@@ -34,8 +34,8 @@ const Home = ({ storyIds = [], activeNav = "", setActiveNav }) => {
         {navbar}
       </div>
       <div className="body">
-        {storyIds.map((storyId, index) => {
-          return <Story key={storyId} storyId={storyId} index={index + 1} />
+        {storyIds.map((storyId) => {
+          return <Story key={storyId} storyId={storyId} />
         })}
         <button className="showmore">show more</button>
       </div>

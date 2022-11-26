@@ -28,8 +28,9 @@
   .home-navbar > button {
     background-color: transparent;
     border: none;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
+    color: colors.$text-light;
   }
 
   .home-navbar > button.-active {
@@ -42,6 +43,12 @@
 
   > .body > .showmore {
     margin: 20px 0 40px 0;
+    background-color: colors.$accent-primary;
+    color: colors.$text-darkmode-primary;
+    border: none;
+    padding: 10px;
+    margin-left: 35px; // aligns with story column
+    cursor: pointer;
   }
 
   > .body .story-container {
@@ -52,11 +59,16 @@
     position: absolute; // keeps footer at bottom of page
     bottom: 0;
     width: 100%;
-    height: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-top: 2px solid colors.$accent-primary;
     padding-top: 30px;
+  }
+
+  > .footer > .title {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 20px;
   }
 }

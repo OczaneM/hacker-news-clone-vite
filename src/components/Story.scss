@@ -54,5 +54,12 @@
     width: 10px;
     margin-right: 5px;
     margin-left: -2px;
+    filter: invert(62%) sepia(0%) saturate(877%) hue-rotate(200deg)
+      brightness(85%) contrast(82%);
+  }
+
+  > .content-column > .body > .save-button.-saved > img {
+    filter: invert(56%) sepia(82%) saturate(3019%) hue-rotate(336deg)
+      brightness(101%) contrast(98%);
   }
 }
